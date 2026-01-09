@@ -1,0 +1,159 @@
+///PHẦN 1: ROLL UP (TỔNG HỢP / CUỘN LÊN)
+
+//1. Tổng hợp Doanh thu theo Năm
+//Mô tả: Thay vì xem từng tháng, ta cuộn lên cấp cao nhất là Năm để xem xu hướng dài hạn.
+
+SELECT 
+    NON EMPTY { [Measures].[Average Purchase Amount] } ON COLUMNS,
+    NON EMPTY { [Dim Time].[YEAR].MEMBERS } ON ROWS
+FROM [Doan Olap]
+
+//2. Tổng hợp Số lượng giao dịch theo Kênh mua sắm
+//Mô tả: Tổng hợp tất cả các đơn hàng lẻ tẻ thành báo cáo tổng theo từng Kênh (Online/Cửa hàng).
+SELECT 
+    NON EMPTY { [Measures].[Fact Count] } ON COLUMNS,
+    NON EMPTY { [Dim Channel].[Purchase Channel].MEMBERS } ON ROWS
+FROM [Doan Olap]
+
+//3. Tổng hợp Độ tuổi trung bình theo Ý định mua hàng
+//Mô tả: Gom nhóm hàng ngàn khách hàng lại thành các nhóm "Ý định" để xem độ tuổi đặc trưng của từng nhóm.
+SELECT 
+    NON EMPTY { [Measures].[Average Age] } ON COLUMNS,
+    NON EMPTY { [Dim Behavior].[Purchase Intent].MEMBERS } ON ROWS
+FROM [Doan Olap]
+
+///PHẦN 2: DRILL DOWN (KHOAN SÂU)
+
+//4. Khoan sâu Doanh thu năm 2024 xuống cấp Tháng
+//Mô tả: muốn biết cụ thể trong năm 2024, tháng nào bán tốt nhất.
+SELECT 
+    NON EMPTY { [Measures].[Average Purchase Amount] } ON COLUMNS,
+    NON EMPTY { 
+        DESCENDANTS(
+            [Dim Time].[Hierarchy].[YEAR].&[2024], 
+            [Dim Time].[Hierarchy].[MONTH]
+        ) 
+    } ON ROWS
+FROM [Doan Olap]
+
+//5. Khoan sâu trung bình doanh thu của Năm 2024 xuống cấp Ngày
+//Mô tả: Xem chi tiết từng ngày trong năm 2024 để phát hiện ngày nào có doanh thu trung bình, chọn ra 10 ngày có doanh thu tốt nhất năm
+WITH 
+    MEMBER [Measures].[Thang Cua Ngay] AS 
+    [Dim Time].[Hierarchy].CurrentMember.Parent.Name
+SELECT 
+    NON EMPTY {        [Measures].[Thang Cua Ngay],       
+	[Measures].[Average Purchase Amount] } ON COLUMNS,
+    NON EMPTY { topcount(
+        DESCENDANTS(
+            [Dim Time].[Hierarchy].[YEAR].&[2024], 
+            [Dim Time].[Hierarchy].[DAY]
+        ),10 ,  [Measures].[Average Purchase Amount] )
+    } ON ROWS
+FROM [Doan Olap]
+
+///PHẦN 3: SLICE AND DICE (CẮT LÁT & THÁI HẠT LỰU)
+
+//6. SLICE: Cắt lát xem Doanh thu theo Kênh, nhưng chỉ của Nữ giới
+//Mô tả: Cố định (Slice) giới tính là Nữ, xem phân bổ theo Kênh.
+SELECT 
+    NON EMPTY { [Measures].[Average Purchase Amount] } ON COLUMNS,
+    NON EMPTY { [Dim Channel].[Purchase Channel].MEMBERS } ON ROWS
+FROM [Doan Olap]
+WHERE ( [Dim Customer Type].[Gender].&[Female] )
+
+//7. DICE: "Thái hạt lựu" thị trường ngách (Nam giới + Mua Online + Ý định cao)
+//Mô tả: Kết hợp 3 chiều dữ liệu để cô lập một nhóm khách hàng cụ thể.
+SELECT 
+    { [Measures].[Average Customer Satisfaction] } ON COLUMNS,
+    NON EMPTY { 
+        (
+            [Dim Customer Type].[Gender].[Male],
+            [Dim Channel].[Purchase Channel].[Online], 
+            [Dim Behavior].[Purchase Intent].MEMBERS    
+        )
+    } ON ROWS
+FROM [Doan Olap]
+
+//8. DICE (Nâng cao với FILTER): Lọc nhóm khách hàng tiềm năng năm 2024
+//Mô tả: Lọc lấy các tháng trong năm 2024 mà có Doanh thu trung bình > 250 (Thái nhỏ vừa theo thời gian vừa theo giá trị).
+SELECT 
+    NON EMPTY { [Measures].[Average Purchase Amount] } ON COLUMNS,
+    NON EMPTY { 
+        FILTER(
+            [Dim Time].[MONTH].MEMBERS * { [Dim Time].[YEAR].[2024] },
+            [Measures].[Average Purchase Amount] > 250
+        )
+    } ON ROWS
+FROM [Doan Olap]
+
+///PHẦN 4: PIVOT (HOÁN VỊ / XOAY TRỤC)
+
+//9. Pivot 1: So sánh Ý định mua hàng (Cột) theo từng Tháng (Dòng)
+//Mô tả: Giúp nhìn thấy xu hướng tâm lý khách hàng thay đổi thế nào theo thời gian.
+SELECT 
+    NON EMPTY { [Dim Behavior].[Purchase Intent].MEMBERS } ON COLUMNS,
+    NON EMPTY { [Dim Time].[MONTH].MEMBERS } ON ROWS
+FROM [Doan Olap]
+WHERE ( [Measures].[Fact Count] )
+
+//10. Pivot 2: Ma trận Giới tính (Cột) và Danh mục hàng hóa (Dòng)
+//Mô tả: Xoay bảng để so sánh đối chiếu trực quan xem Nam/Nữ thích mua loại hàng nào nhất (Điện tử, Gia dụng...).
+SELECT 
+    NON EMPTY { [Dim Customer Type].[Gender].MEMBERS } ON COLUMNS,
+    NON EMPTY { [Dim Purchase Category].[Purchase Category].MEMBERS } ON ROWS
+FROM [Doan Olap]
+WHERE ( [Measures].[Average Purchase Amount] )
+
+
+
+
+
+
+
+// ngày có tổng doanh thu cao nhất vói từng tháng
+SELECT 
+    NON EMPTY { [Measures].[Purchase Amount] } ON COLUMNS,
+    NON EMPTY { 
+        
+        GENERATE(  
+            DESCENDANTS([Dim Time].[Hierarchy].[YEAR].&[2024], [Dim Time].[Hierarchy].[MONTH]),
+            TOPCOUNT(
+                DESCENDANTS(
+                    [Dim Time].[Hierarchy].CurrentMember, 
+                    [Dim Time].[Hierarchy].[DAY] 
+                ),
+                1, 
+                [Measures].[Purchase Amount]
+            )
+        )
+    } ON ROWS
+FROM [Doan Olap]
+
+
+//// NGÀY CÓ TỔNG DOANH THU CAO NHÁT
+WITH 
+    MEMBER [Measures].[Thang Cua Ngay] AS 
+    [Dim Time].[Hierarchy].CurrentMember.Parent.Name
+
+SELECT 
+    NON EMPTY { 
+        [Measures].[Thang Cua Ngay],     
+        [Measures].[Purchase Amount]      
+    } ON COLUMNS,
+    NON EMPTY { TOPCOUNT(
+        GENERATE(  
+           DESCENDANTS(
+                  [Dim Time].[Hierarchy].[YEAR].&[2024],[Dim Time].[Hierarchy].[MONTH]),
+               TOPCOUNT(
+			   DESCENDANTS(
+                    [Dim Time].[Hierarchy].CurrentMember, 
+                    [Dim Time].[Hierarchy].[DAY] 
+                ),
+                1, 
+                [Measures].[Purchase Amount]
+            )
+        ) ,1, 
+                [Measures].[Purchase Amount])
+    } ON ROWS
+FROM [Doan Olap]

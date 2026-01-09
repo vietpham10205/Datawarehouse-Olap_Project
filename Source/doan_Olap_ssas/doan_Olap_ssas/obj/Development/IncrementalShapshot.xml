@@ -1,0 +1,103 @@
+﻿<DeploymentSnapshot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:ddl200="http://schemas.microsoft.com/analysisservices/2010/engine/200" xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200" xmlns:ddl300="http://schemas.microsoft.com/analysisservices/2011/engine/300" xmlns:ddl300_300="http://schemas.microsoft.com/analysisservices/2011/engine/300/300" xmlns:ddl400="http://schemas.microsoft.com/analysisservices/2012/engine/400" xmlns:ddl400_400="http://schemas.microsoft.com/analysisservices/2012/engine/400/400" xmlns:ddl500="http://schemas.microsoft.com/analysisservices/2013/engine/500" xmlns:ddl500_500="http://schemas.microsoft.com/analysisservices/2013/engine/500/500" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0">
+  <Target>
+    <Database>doan_Olap_ssas</Database>
+    <Server>VJT\SSAS_MULTI</Server>
+    <ConnectionString>Data Source=VJT\SSAS_MULTI;Timeout=0</ConnectionString>
+  </Target>
+  <Options>
+    <TransactionalDeployment>false</TransactionalDeployment>
+    <PartitionDeployment>DeployPartitions</PartitionDeployment>
+    <RoleDeployment>DeployRolesRetainMembers</RoleDeployment>
+    <ProcessingOption>DoNotProcess</ProcessingOption>
+    <OutputScript></OutputScript>
+    <ImpactAnalysisFile></ImpactAnalysisFile>
+    <ConfigurationSettingsDeployment>Deploy</ConfigurationSettingsDeployment>
+    <OptimizationSettingsDeployment>Deploy</OptimizationSettingsDeployment>
+    <WriteBackTableCreation>UseExisting</WriteBackTableCreation>
+  </Options>
+  <Snapshot>
+    <ObjectSnapshots>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.RelationalDataSource</Type>
+        <TimeStamp>A/drjL7iCz4eHeeQz153Tv0+81Q=12/29/2025 1:46:37 AM12/29/2025 1:46:37 AM</TimeStamp>
+        <ID>
+          <String>Doan Olap</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.DataSourceView</Type>
+        <TimeStamp>KnMpQyhojv5y/WOmXcKEvSg2GyE=12/29/2025 1:46:58 AM12/29/2025 1:46:58 AM</TimeStamp>
+        <ID>
+          <String>Doan Olap</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>AmS+rrXUXW//hIzBLqd87LSVH4c=12/29/2025 1:47:20 AM12/29/2025 1:47:20 AM</TimeStamp>
+        <ID>
+          <String>Dim Location</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>DrnhOQVATvRF+LzDwjG552hNysk=12/29/2025 1:47:20 AM12/29/2025 1:47:20 AM</TimeStamp>
+        <ID>
+          <String>Dim Purchase Category</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>2T955rctAuzttGszXDulpFDARo8=12/29/2025 1:51:19 AM12/29/2025 1:47:20 AM</TimeStamp>
+        <ID>
+          <String>Dim Time</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>Mi3YRXopsL+3gFNID1IpXcQsiww=12/29/2025 1:51:19 AM12/29/2025 1:47:20 AM</TimeStamp>
+        <ID>
+          <String>Dim Customer Type</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>WxDitCalriiTc8i+SKZsknwFs6I=12/29/2025 1:51:19 AM12/29/2025 1:47:20 AM</TimeStamp>
+        <ID>
+          <String>Dim Behavior</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>FFe7Jr2kYITObJE0tsbF+QvM6II=12/29/2025 1:51:19 AM12/29/2025 1:47:20 AM</TimeStamp>
+        <ID>
+          <String>Dim Channel</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>WFHsXMobsaeTSK6T3Ec7yN6BhgI=12/29/2025 1:51:19 AM12/29/2025 1:47:20 AM</TimeStamp>
+        <ID>
+          <String>Dim Purchase Attribute</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Cube</Type>
+        <TimeStamp>7b2NnSaKzFf1E3h2ULlEEKX87nw=12/29/2025 1:51:19 AM12/29/2025 1:47:20 AMSZg355WG9w3Mc50j6KTIoJ+fHKQ=12/29/2025 1:47:20 AM12/29/2025 1:47:20 AM</TimeStamp>
+        <ID>
+          <String>Doan Olap</String>
+        </ID>
+      </ObjectSnapshot>
+    </ObjectSnapshots>
+    <DatabaseSnapshot>
+      <Type>Microsoft.AnalysisServices.Database</Type>
+      <TimeStamp>adrVo1fXF3yIPiJ1crzww/aGTAs=12/29/2025 1:37:26 AM12/29/2025 1:37:26 AM</TimeStamp>
+      <ID>
+        <String>doan_Olap_ssas</String>
+      </ID>
+    </DatabaseSnapshot>
+    <Granularity>Coarse</Granularity>
+  </Snapshot>
+  <AssemblyLocations />
+  <ProcessingComplete>true</ProcessingComplete>
+  <LastDeployed>2025-12-28T18:51:20.263333Z</LastDeployed>
+</DeploymentSnapshot>
