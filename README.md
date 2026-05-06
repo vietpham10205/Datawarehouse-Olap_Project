@@ -1,6 +1,6 @@
   ---
 
-  🛒 ###E-commerce Consumer Behavior Analysis & BI Solution
+  E-commerce Consumer Behavior Analysis & BI Solution
   (Phân tích hành vi người tiêu dùng & Giải pháp Business Intelligence)
 
   ---
